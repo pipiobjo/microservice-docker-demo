@@ -1,0 +1,3 @@
+= HelloWorldApp
+
+Nothing so special for now. Simple Rest Controller with some unit and integration testing
