@@ -6,6 +6,18 @@ Starting with a simple application and build step by step a complex infrastructu
 The application and infrastructure components should containerized even during development
 
 
+Chapters:
+
+1. Provide a simple business application (helloWorldApp)
+
+    1.1. Dockerize the simple Application
+
+1.2 Development and deployment within the docker container
+
+2. Provide a second business application (motdApp)
+
+
+
 = Artefacts
 
 include::file://./backend-services/helloWorldApp/.adoc[Provide a simple helloWorldApp] to show how rest services could be created and tested
@@ -18,5 +30,10 @@ include::file://./backend-services/helloWorldApp/.adoc[Provide a simple helloWor
 * Spring Boot Artefact init via https://start.spring.io/
 * Gradle gradle-4.10.2
 * https://docs.spring.io/spring-boot/docs/current/reference/html/using-boot-devtools.html[Spring Boot Devtool] for automated restarts, we need them for docker https://docs.spring.io/spring-boot/docs/current/reference/html/using-boot-devtools.html#using-boot-devtools-remote[remote deployment]
-
-
+* Using for request logging       <!-- request tracing id -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-sleuth</artifactId>
+        </dependency>
+* https://cloud.spring.io/spring-cloud-sleuth/single/spring-cloud-sleuth.html#_json_logback_with_logstash
+* JMX https://docs.spring.io/spring/docs/3.2.x/spring-framework-reference/html/jmx.html

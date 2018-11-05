@@ -1,3 +1,76 @@
 = HelloWorldApp
 
 Nothing so special for now. Simple Rest Controller with some unit and integration testing
+
+
+= Dockerize the App
+
+Some simple Dockerfile could be:
+
+----
+FROM openjdk:8-jdk-alpine
+VOLUME /tmp
+ARG JAR_FILE
+COPY ${JAR_FILE} app.jar
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
+----
+
+But we try to use the gradle plugin https://bmuschko.github.io/gradle-docker-plugin/#spring_boot_application_plugin[gradle-docker-plugin]  it has some build-in features for spring boot applications
+
+Configure it via:
+----
+docker {
+    springBootApplication {
+        baseImage = 'openjdk:8-alpine'
+        ports = [9090, 8080]
+    }
+}
+----
+
+Execute gradle:
+----
+./gradlew clean dockerBuildImage
+----
+
+A local docker image is created check it via:
+----
+# docker images | grep hello
+
+com.pipiobjo.microservice/helloworldapp   0.0.1-snapshot      edcd06608634        12 seconds ago      141MB
+----
+
+Run the container via
+----
+# docker run -d -p 8080:8080 --name helloworldapp -it com.pipiobjo.microservice/helloworldapp:0.0.1-snapshot && docker logs -f helloworldapp
+----
+
+List running container
+----
+# docker container ls -a | grep hello
+148447f6e1fe        com.pipiobjo.microservice/helloworldapp:0.0.1-snapshot   "java -jar /app/hell…"   About a minute ago   Exited (130) About a minute ago                       helloworldapp
+
+----
+
+Logging output of the container:
+----
+# docker logs -f helloworldapp
+----
+
+Stopping the container:
+----
+docker stop helloworldapp
+docker rm helloworldapp
+----
+
+
+Using remote debugging:
+----
+docker run -d -e "JAVA_OPTS=’-agentlib:jdwp=transport=dt_socket,address=5005,server=y,suspend=n’" -p 8080:8080 -p 5005:5005 --name helloworldapp -it com.pipiobjo.microservice/helloworldapp:0.0.1-snapshot
+----
+
+Connect to the running container via bash
+----
+docker exec -i -t helloworldapp /bin/bash
+----
+
+
