@@ -74,3 +74,43 @@ docker exec -i -t helloworldapp /bin/bash
 ----
 
 
+# Hotreload to Docker via spring-boot-devtools
+
+## Adjust the application.yml
+
+----
+
+spring.devtools.remote.secret: mysecret
+
+----
+
+
+## IntelliJ Run / Debug Config
+
+- New Spring Boot Run Config
+- Main Class org.springframework.boot.devtools.RemoteSpringApplication
+- Program args: http://localhost:8080 -> the forwarded docker port
+- Run parameters need the additional "spring.devtools.remote.secret= mysecret" settings
+- Rebuild module, depends on your IDE Eclipse use automatic build on changes
+
+image::doc/imgs/Intellij-spring-boot-remote-connection-config.png[IntelliJ configuration for SpringBoot DevTools]
+
+Now you can change your code a is redeployed into the docker container
+
+----
+
+INFO 30668 --- [   File Watcher] o.s.b.d.r.c.ClassPathChangeUploader      : Uploaded 6 class resources
+INFO 30668 --- [pool-1-thread-1] o.s.b.d.r.c.DelayedLiveReloadTrigger     : Remote server has changed, triggering LiveReload
+
+
+----
+
+
+[NOTE]
+====
+I'm not sure if its a good idea to include the spring-boot-dev-tools in the jar.
+Production envs will also have the jar and thats maybe an security issue, even if
+spring.application.devtools.remote.secret property is not set for the production profile
+
+
+====

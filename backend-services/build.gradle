@@ -34,6 +34,6 @@ dependencies {
 allprojects {
     repositories {
         jcenter()
-	mavenCentral() 
+    	mavenCentral()
     }
 }

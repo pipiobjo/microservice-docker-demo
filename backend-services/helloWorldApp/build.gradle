@@ -41,8 +41,12 @@ configurations {
     }
 }
 
+bootJar {
+    excludeDevtools = false
+}
+
 dependencies {
-    developmentOnly("org.springframework.boot:spring-boot-devtools")
+    implementation("org.springframework.boot:spring-boot-devtools")
     compileOnly('org.projectlombok:lombok')
     testImplementation("org.assertj:assertj-core:3.11.1")
     testImplementation 'io.rest-assured:rest-assured:3.2.0'

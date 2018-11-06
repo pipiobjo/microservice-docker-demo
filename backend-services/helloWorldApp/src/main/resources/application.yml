@@ -1,3 +1,10 @@
+spring:
+   application:
+      name: helloWorldApplication
+   devtools:
+      remote:
+         secret: mysecret
+
 eureka:
   client:
     enabled: false
