@@ -37,3 +37,44 @@ include::file://./backend-services/helloWorldApp/.adoc[Provide a simple helloWor
         </dependency>
 * https://cloud.spring.io/spring-cloud-sleuth/single/spring-cloud-sleuth.html#_json_logback_with_logstash
 * JMX https://docs.spring.io/spring/docs/3.2.x/spring-framework-reference/html/jmx.html
+
+
+
+= Next Learning Steps
+
+== Development
+
+* Provide your own business service maybe a "message of the day" service
+* Provide a docker-compose setup for your environment
+* Provide a single entry point (webgateway) to consume both of your services
+* Provide a security context
+** Consider a stateless security context to all business service calls
+** Provide multiple user roles
+** Provide a mechanism for easy role checks in your dev environment
+** Try to use keycloak as docker container in your environment
+** Provide AuthEndpoints for a social media network
+* Provide a monitoring environment
+** Consider long-term monitoring with persistence
+* Provide a logging environment
+** Consider requestIds / tracingIds (sleuth)
+* Scale things up
+** Provide multiple instances of every service
+** Consider that scaling the webgateway, results in different IPs
+** Consider that the auth state has to be shared with the other webgateway instances (redis)
+*** Is there a way to use virtual ips in docker, for a developer setup?
+
+
+== Deployment / Runtime
+
+* Provide a cloud setup
+** provide a configuration setup
+** dynamic scaling of your microservice
+** check kubernetes / docker swarm
+*** https://itnext.io/migrating-a-spring-boot-service-to-kubernetes-in-5-steps-7c1702da81b6
+*** https://jaxenter.de/spring-boot-tutorial-microservices-cloud-foundry-kubernetes-58695
+*** https://spring.fabric8.io/
+
+
+
+
+
