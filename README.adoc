@@ -42,7 +42,7 @@ include::file://./backend-services/helloWorldApp/.adoc[Provide a simple helloWor
 
 = Next Learning Steps
 
-== Development
+== Development of backend services
 
 * Provide your own business service maybe a "message of the day" service
 * Provide a docker-compose setup for your environment
@@ -62,6 +62,13 @@ include::file://./backend-services/helloWorldApp/.adoc[Provide a simple helloWor
 ** Consider that scaling the webgateway, results in different IPs
 ** Consider that the auth state has to be shared with the other webgateway instances (redis)
 *** Is there a way to use virtual ips in docker, for a developer setup?
+
+
+== Development of frontend services
+
+* Provide a microfrontend infrastructure
+** Checkout https://micro-frontends.org/
+* Provide a Frontend containing multiple UI Frameworks for example Angular and Vuejs
 
 
 == Deployment / Runtime
