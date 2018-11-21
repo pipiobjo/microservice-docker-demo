@@ -1,0 +1,13 @@
+spring:
+   application:
+      name: motdApplication
+   devtools:
+      remote:
+         secret: mysecret
+
+eureka:
+  client:
+    enabled: false
+
+motd:
+   creationIntervall:  3000      # in ms ->  2 * 1000

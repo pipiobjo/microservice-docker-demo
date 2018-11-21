@@ -1,0 +1,61 @@
+[
+    {
+      "naturalId": "1",
+      "quote": "  Teach self-denial and make its practice pleasure, and you can create for the world a destiny more sublime that ever issued from the brain of the wildest dreamer.",
+      "quoteFragment": "Teach self-denial and make its practice...",
+      "uri": "1",
+      "thoughtAuthor": {
+        "name": "Sir Walter Scott",
+        "uri": "sir-walter-scott",
+        "image": "sir-walter-scott"
+      },
+      "thoughtThemes": [
+        {
+          "name": "Self",
+          "uri": "self"
+        }
+      ],
+      "visible": true,
+      "shortUri": "http://onforb.es/TK4kVr"
+    } ,
+  {
+    "naturalId": "10306",
+    "quote": "I never worry about action, but only about inaction.",
+    "quoteFragment": "I never worry about action, but only...",
+    "uri": "10306",
+    "sortField": 499,
+    "thoughtAuthor": {
+      "name": "Winston Churchill",
+      "uri": "winston-churchill",
+      "image": "winston-churchill"
+    },
+    "thoughtThemes": [
+      {
+        "name": "Action",
+        "uri": "action"
+      }
+    ],
+    "visible": true,
+    "shortUri": "http://onforb.es/TKtXW6"
+  },
+  {
+    "naturalId": "5038",
+    "quote": "There is nothing in life so irrational, that good sense and chance may not set it to rights; nothing so rational, that folly and chance may not utterly confound it.",
+    "quoteFragment": "There is nothing in life so irrational...",
+    "uri": "5038",
+    "sortField": 500,
+    "thoughtAuthor": {
+      "name": "Johann Wolfgang Von Goethe",
+      "uri": "johann-wolfgang-von-goethe"
+    },
+    "thoughtThemes": [
+      {
+        "name": "Chance",
+        "uri": "chance"
+      }
+    ],
+    "visible": true,
+    "shortUri": "http://onforb.es/TK8IUr"
+  }
+
+]

@@ -1,28 +1,27 @@
-= HelloWorldApp
+= motdApp
 
-Nothing so special for now. Simple Rest Controller with some unit and integration testing
+A message of the day app.
+
+* Json Data from https://www.forbes.com/forbesapi/thought/uri.json?enrich=true&query=10&relatedlimit=10[forbes] to provide dummy data
+* Using Caching to rotate the message every 24h
+** Providing an integration test for rotation logic
+** Necessary for distributed caching showcase later on
+
+
+
 
 
 = Dockerize the App
 
-Some simple Dockerfile could be:
 
-----
-FROM openjdk:8-jdk-alpine
-VOLUME /tmp
-ARG JAR_FILE
-COPY ${JAR_FILE} app.jar
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
-----
-
-But we try to use the gradle plugin https://bmuschko.github.io/gradle-docker-plugin/#spring_boot_application_plugin[gradle-docker-plugin]  it has some build-in features for spring boot applications
+Use the gradle plugin https://bmuschko.github.io/gradle-docker-plugin/#spring_boot_application_plugin[gradle-docker-plugin]  it has some build-in features for spring boot applications
 
 Configure it via:
 ----
 docker {
     springBootApplication {
         baseImage = 'openjdk:8-alpine'
-        ports = [9090, 8080]
+        ports = [9091, 8080]
     }
 }
 ----
@@ -34,43 +33,43 @@ Execute gradle:
 
 A local docker image is created check it via:
 ----
-# docker images | grep hello
+# docker images | grep motd
 
-com.pipiobjo.microservice/helloworldapp   0.0.1-snapshot      edcd06608634        12 seconds ago      141MB
+
 ----
 
 Run the container via
 ----
-# docker run -d -p 8080:8080 --name helloworldapp -it com.pipiobjo.microservice/helloworldapp:0.0.1-snapshot && docker logs -f helloworldapp
+# docker run -d -p 8080:8080 --name motdapp -it com.pipiobjo.microservice/motdapp:0.0.1-snapshot && docker logs -f motdapp
 ----
 
 List running container
 ----
-# docker container ls -a | grep hello
-148447f6e1fe        com.pipiobjo.microservice/helloworldapp:0.0.1-snapshot   "java -jar /app/hell…"   About a minute ago   Exited (130) About a minute ago                       helloworldapp
+# docker container ls -a | grep motd
+148447f6e1fe        com.pipiobjo.microservice/motdapp:0.0.1-snapshot   "java -jar /app/hell…"   About a minute ago   Exited (130) About a minute ago                       motdapp
 
 ----
 
 Logging output of the container:
 ----
-# docker logs -f helloworldapp
+# docker logs -f motdapp
 ----
 
 Stopping the container:
 ----
-docker stop helloworldapp
-docker rm helloworldapp
+docker stop motdapp
+docker rm motdapp
 ----
 
 
 Using remote debugging:
 ----
-docker run -d -e "JAVA_OPTS=’-agentlib:jdwp=transport=dt_socket,address=5005,server=y,suspend=n’" -p 8080:8080 -p 5005:5005 --name helloworldapp -it com.pipiobjo.microservice/helloworldapp:0.0.1-snapshot
+docker run -d -e "JAVA_OPTS=’-agentlib:jdwp=transport=dt_socket,address=5005,server=y,suspend=n’" -p 8081:8080 -p 5006:5005 --name motdapp -it com.pipiobjo.microservice/motdapp:0.0.1-snapshot
 ----
 
 Connect to the running container via bash
 ----
-docker exec -i -t helloworldapp /bin/bash
+docker exec -i -t motdapp /bin/bash
 ----
 
 
@@ -89,7 +88,7 @@ spring.devtools.remote.secret: mysecret
 
 - New Spring Boot Run Config
 - Main Class org.springframework.boot.devtools.RemoteSpringApplication
-- Program args: http://localhost:8080 -> the forwarded docker port
+- Program args: http://localhost:8081 -> the forwarded docker port
 - Run parameters need the additional "spring.devtools.remote.secret= mysecret" settings
 - Rebuild module, depends on your IDE Eclipse use automatic build on changes
 
