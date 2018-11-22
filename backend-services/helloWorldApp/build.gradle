@@ -10,6 +10,7 @@ buildscript {
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
         classpath "com.bmuschko:gradle-docker-plugin:4.0.3"
+        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.6.2"
 	}
 }
 
@@ -18,11 +19,14 @@ apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'com.bmuschko.docker-spring-boot-application'
+apply plugin: "org.sonarqube"
+apply plugin: "jacoco"
 
 
 group = 'com.pipiobjo.microservice'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
+
 
 repositories {
     jcenter()
@@ -126,5 +130,14 @@ docker {
     springBootApplication {
 //        baseImage = 'openjdk:8-alpine'
         ports = [9090, 8080]
+    }
+}
+
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        csv.enabled false
+        html.destination file("${buildDir}/jacocoHtml")
     }
 }
