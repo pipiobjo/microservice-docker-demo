@@ -50,10 +50,11 @@ public class ModtControllerITest {
 		Response r = get("/motd");
 		JsonPath jsonPath = r.jsonPath();
 		String content = jsonPath.get("content");
+		String id = jsonPath.get("id");
 		assertThat(content).isNotBlank();
 
 		get("/motd").then().body("content", equalTo(content));
-		get("/motd").then().body("id", equalTo(1));
+		get("/motd").then().body("id", not(equalTo(id)));
 
 //		Doing this way is of course not working ;-)
 //		await().atLeast(5, SECONDS);
