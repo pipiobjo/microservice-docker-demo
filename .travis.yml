@@ -1,0 +1,9 @@
+matrix:
+   include:
+    language: java
+    jdk:
+    - openjdk8
+    script:
+      - cd backend-services/helloWorldApp/
+      - chmod +x gradlew
+      - ./gradlew build
