@@ -5,4 +5,4 @@ jdk:
 - openjdk8
 script:
   - cd backend-services
-  - ./gradlew build sonarqube -Dsonar.organization=pipiobjo-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=56be13feec0f3a27ebef137661a4250102d24769 jacocoTestReport
+  - ./gradlew clean build sonarqube -Dsonar.organization=pipiobjo-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=56be13feec0f3a27ebef137661a4250102d24769 jacocoTestReport
