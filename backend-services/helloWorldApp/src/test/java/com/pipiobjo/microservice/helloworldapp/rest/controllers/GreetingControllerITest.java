@@ -1,5 +1,6 @@
 package com.pipiobjo.microservice.helloworldapp.rest.controllers;
 
+import com.pipiobjo.microservice.helloworldapp.HelloWorldAppApplication;
 import io.restassured.RestAssured;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +13,7 @@ import static io.restassured.RestAssured.*;
 import static  org.hamcrest.Matchers.*;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = {HelloWorldAppApplication.class},webEnvironment = WebEnvironment.RANDOM_PORT)
 public class GreetingControllerITest {
 
     @LocalServerPort

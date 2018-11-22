@@ -9,6 +9,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Component
@@ -40,7 +41,10 @@ public class MotdService {
     @CacheEvict(allEntries = true, value = {"motd"})
     @Scheduled(fixedDelayString = "${motd.creationIntervall}")
     public Motd buildNewMotd(){
-        this.msg = new Motd(counter.incrementAndGet(), repository.getRandomQuote());
+
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+        this.msg = Motd.builder().id(counter.incrementAndGet()).timestamp(time).content(repository.getRandomQuote()).build();
+        log.info("New Quote generated {} ", this.msg);
         return this.msg;
     }
 }

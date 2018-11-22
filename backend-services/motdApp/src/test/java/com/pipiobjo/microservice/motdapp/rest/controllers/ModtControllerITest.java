@@ -45,8 +45,11 @@ public class ModtControllerITest {
 		Response r = get("/motd");
 		JsonPath jsonPath = r.jsonPath();
 		String content = jsonPath.get("content");
-		int id = jsonPath.get("id");
-		assertThat(content).isNotBlank();
+        assertThat(content).isNotBlank();
+        int id = jsonPath.get("id");
+        String timestamp = jsonPath.getString("timestamp");
+        assertThat(timestamp).isNotBlank();
+
 
 		get("/motd").then().body("content", equalTo(content), "id", equalTo(id));
 
@@ -54,7 +57,7 @@ public class ModtControllerITest {
 //		await().atLeast(5, SECONDS);
 //		get("/motd").then().body("content", not(equalTo(content)));
 
-		await().atLeast(delay+100, MILLISECONDS).untilAsserted(() -> get("/motd").then().body("content", not(equalTo(content))));
+		await().atLeast(delay+100, MILLISECONDS).untilAsserted(() -> get("/motd").then().body("id", not(equalTo(id))));
 
 	}
 

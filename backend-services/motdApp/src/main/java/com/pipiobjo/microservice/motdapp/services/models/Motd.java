@@ -1,13 +1,17 @@
 package com.pipiobjo.microservice.motdapp.services.models;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+import java.sql.Timestamp;
+
 @Data
-@RequiredArgsConstructor
+@Builder
 public class Motd {
 
-    private final long id;
-    private final String content;
+    private long id;
+    private String content;
+    private Timestamp timestamp;
 
 }
