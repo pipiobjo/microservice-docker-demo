@@ -1,0 +1,47 @@
+version: "3.3"
+
+
+#  localNetwork:
+    #driver: bridge
+#    ipam:
+#     config:
+#       - subnet: 173.20.0.0/16 # default is 172.20.0.0/16
+       #-  gateway: 173.20.0.1 # default is
+
+
+networks:
+  backend:
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24
+services:
+
+  eureka:
+    image: springcloud/eureka
+    networks:
+      backend:
+          ipv4_address: 172.20.0.5
+    ports:
+          - "8761:8761"
+
+  helloWorld:
+    image: com.pipiobjo.microservice/helloworldapp:0.0.1-snapshot
+    networks:
+      backend:
+    ports:
+          - "8180:8080"
+          - "5105:5005"
+    environment:
+      JAVA_OPTS: "-agentlib:jdwp=transport=dt_socket,address=5005,server=y,suspend=n -Dspring.profiles.active=local -Deureka.instance.hostname=172.20.0.5"
+  motd:
+    image: com.pipiobjo.microservice/motdapp:0.0.1-snapshot
+    networks:
+      backend:
+    ports:
+          - "8280:8080"
+          - "5005:5005"
+    environment:
+      JAVA_OPTS: "-agentlib:jdwp=transport=dt_socket,address=5005,server=y,suspend=n -Dspring.profiles.active=local -Deureka.instance.hostname=172.20.0.5"
+
+
+

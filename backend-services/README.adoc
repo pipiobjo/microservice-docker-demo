@@ -1,0 +1,131 @@
+= Docker Compose
+
+
+Pull new images
+
+----
+
+docker-compose pull
+
+----
+
+
+Setup using docker-compose.yml file, in daemon mode
+
+----
+
+docker-compose -f docker-compose.yml up -d
+
+----
+
+Stop and remove
+
+----
+
+docker-compose stop && docker-compose rm -f
+
+----
+
+
+== URLS
+
+eureka: http://localhost:8761
+helloWorld: http://localhost:8180/swagger-ui.html
+motd: http://localhost:8280/swagger-ui.html
+
+
+= Docker Network
+
+----
+$ docker network ls
+
+NETWORK ID          NAME                                      DRIVER              SCOPE
+360b01e5cf80        backend-services_default                  bridge              local
+
+----
+
+
+----
+
+docker network inspect backend-services_default
+[
+    {
+        "Name": "backend-services_default",
+        "Id": "360b01e5cf8066ed0a841e19b8c095262510e051817815b27a2a1c676a8aa484",
+        "Created": "2018-11-22T17:14:16.734537712+01:00",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": null,
+            "Config": [
+                {
+                    "Subnet": "172.20.0.0/16",
+                    "Gateway": "172.20.0.1"
+                }
+            ]
+        },
+        "Internal": false,
+        "Attachable": true,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Containers": {
+            "52dc1664159b816a59ec3b17abc90e9126fa9cbd09cc9118d6c0d7053ab7d22e": {
+                "Name": "backend-services_motd_1",
+                "EndpointID": "5dc9938a32591cf6290c27d27c55fede9adb484b72c1818cfd4fc66ec4fa0298",
+                "MacAddress": "02:42:ac:14:00:03",
+                "IPv4Address": "172.20.0.3/16",
+                "IPv6Address": ""
+            },
+            "ad6fd50b7b622cb74abda661555ae8af31f38ccfba7b86a0c16c5c786e3d095a": {
+                "Name": "backend-services_helloWorld_1",
+                "EndpointID": "33efee7cb7cf2b5642476ee0555da4fa571f66128ab619dffdfd11150cb42ba0",
+                "MacAddress": "02:42:ac:14:00:02",
+                "IPv4Address": "172.20.0.2/16",
+                "IPv6Address": ""
+            },
+            "c019ebc89a6bd0f65c78f0931c804c5790fa4f6c10afd0ade4fc45bd405ba62f": {
+                "Name": "backend-services_eureka_1",
+                "EndpointID": "686eb8be170a29083a1270b2153e6fc2e5003e17fedf8e9eac5feb43032670fb",
+                "MacAddress": "02:42:ac:14:00:04",
+                "IPv4Address": "172.20.0.4/16",
+                "IPv6Address": ""
+            }
+        },
+        "Options": {},
+        "Labels": {
+            "com.docker.compose.network": "default",
+            "com.docker.compose.project": "backend-services",
+            "com.docker.compose.version": "1.22.0"
+        }
+    }
+]
+
+
+----
+
+
+Remove unused networks
+
+----
+docker network prune
+----
+
+
+== Troubleshooting
+
+
+----
+
+Creating network "backend-services_frontend" with the default driver
+ERROR: Pool overlaps with other one on this address space
+
+
+----
+
+Check for existing networks, and delete them
+Check that all unwanted containers are stopped
