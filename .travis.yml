@@ -1,6 +1,7 @@
 language: java
+install: true
 jdk:
 - openjdk8
 script:
   - cd backend-services/helloWorldApp/
-  - ./gradlew build
+  - ./gradlew build --scan -s
