@@ -29,9 +29,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
 }
 */
-
-apply java
-
+apply plugin: 'java'
 
 allprojects {
     repositories {

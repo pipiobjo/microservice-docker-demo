@@ -47,7 +47,7 @@ bootJar {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-devtools")
-    compileOnly('org.projectlombok:lombok')
+    compileOnly('org.projectlombok:lombok:1.16.20')
     testImplementation("org.assertj:assertj-core:3.11.1")
     testImplementation 'io.rest-assured:rest-assured:3.2.0'
 	implementation("org.springframework.boot:spring-boot-starter-web")
