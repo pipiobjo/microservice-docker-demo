@@ -4,6 +4,6 @@ matrix:
     jdk:
     - openjdk8
     script:
-      - cd backend-services/helloWorldApp/
-      - chmod +x gradlew
+#      - cd backend-services/helloWorldApp/
+#      - chmod +x gradlew
       - ./gradlew build
