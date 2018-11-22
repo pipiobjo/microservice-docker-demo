@@ -27,12 +27,26 @@ public class ThoughtRepositoryTest {
         final URL resource = this.getClass().getClassLoader().getResource("json/thought.json");
         assertThat(resource).isNotNull();
         ThoughtRepository repo = new ThoughtRepository();
-        final String quote = repo.getRandomQuote();
-        assertThat(quote).isNotBlank();
+        for(int i=0; i<100; i++){
+            final String quote = repo.getRandomQuote();
+            assertThat(quote).isNotBlank();
 
-        final String quote1 = repo.getRandomQuote();
-        assertThat(quote1).isNotBlank();
-        assertThat(quote).isNotEqualTo(quote1);
+            final String quote1 = repo.getRandomQuote();
+            assertThat(quote1).isNotBlank();
+            assertThat(quote).isNotEqualTo(quote1);
+        }
+
+    }
+
+    @Test
+    public void testRandomInt(){
+        ThoughtRepository repo = new ThoughtRepository();
+        int idx = repo.generateRandom(-1, 3);
+        for(int i = 0; i < 100; i++){
+            int tmp = repo.generateRandom(idx, 3);
+            assertThat(tmp).isNotEqualTo(idx);
+            idx = tmp;
+        }
 
     }
 }

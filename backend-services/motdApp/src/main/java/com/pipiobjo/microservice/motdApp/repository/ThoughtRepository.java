@@ -23,7 +23,7 @@ private Type listType = new TypeToken<ArrayList<Thought>>(){}.getType();
     public String getRandomQuote (){
         List<Thought> data = readThoughtsFromFile();
 
-        this.idx = new Random().nextInt(data.size());
+        this.idx = this.generateRandom(idx, data.size()-1);
         return data.get(idx).getQuote();
     }
 
@@ -41,14 +41,13 @@ private Type listType = new TypeToken<ArrayList<Thought>>(){}.getType();
         return gson.fromJson(reader, listType);
     }
 
-    int generateRandom(int lastRandomNumber, int maxValue) {
+    public int generateRandom(int lastRandomNumber, int maxValue) {
 
-        // add-and-wrap another random number to produce a guaranteed
-        // different result.
-        // note the one-less-than UPPER_BOUND input
-        int rotate = 1 + random.nextInt(maxValue - 1);
-        // 'rotate' the last number
-        return (lastRandomNumber + rotate) % maxValue;
+        int randomNumber;
+        do {
+            randomNumber = random.nextInt(maxValue);
+        } while (randomNumber == lastRandomNumber);
+        return randomNumber;
 
     }
 }
