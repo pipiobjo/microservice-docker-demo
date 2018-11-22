@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 import java.sql.Timestamp;
+import java.time.LocalTime;
 
 @Data
 @Builder
@@ -12,6 +13,6 @@ public class Motd {
 
     private long id;
     private String content;
-    private Timestamp timestamp;
+    private LocalTime timestamp;
 
 }

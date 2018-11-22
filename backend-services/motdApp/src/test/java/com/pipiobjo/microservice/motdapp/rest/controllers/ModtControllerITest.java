@@ -51,13 +51,11 @@ public class ModtControllerITest {
         assertThat(timestamp).isNotBlank();
 
 
-		get("/motd").then().body("content", equalTo(content), "id", equalTo(id));
-
 //		Doing this way is of course not working ;-)
 //		await().atLeast(5, SECONDS);
 //		get("/motd").then().body("content", not(equalTo(content)));
 
-		await().atLeast(delay+100, MILLISECONDS).untilAsserted(() -> get("/motd").then().body("id", not(equalTo(id))));
+		await().atLeast(delay+100, MILLISECONDS).untilAsserted(() -> get("/motd").then().body("timestamp", not(equalTo(timestamp))));
 
 	}
 

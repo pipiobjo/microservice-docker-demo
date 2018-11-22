@@ -10,6 +10,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
+import java.time.LocalTime;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Component
@@ -42,8 +43,7 @@ public class MotdService {
     @Scheduled(fixedDelayString = "${motd.creationIntervall}")
     public Motd buildNewMotd(){
 
-        Timestamp time = new Timestamp(System.currentTimeMillis());
-        this.msg = Motd.builder().id(counter.incrementAndGet()).timestamp(time).content(repository.getRandomQuote()).build();
+        this.msg = Motd.builder().id(counter.incrementAndGet()).timestamp(LocalTime.now()).content(repository.getRandomQuote()).build();
         log.info("New Quote generated {} ", this.msg);
         return this.msg;
     }
