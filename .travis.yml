@@ -1,7 +1,8 @@
+sudo: false
 language: java
 install: true
 jdk:
 - openjdk8
 script:
   - cd backend-services
-  - ./gradlew build --scan -s
+  - ./gradlew build
