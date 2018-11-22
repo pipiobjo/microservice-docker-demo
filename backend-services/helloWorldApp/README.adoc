@@ -3,6 +3,11 @@
 Nothing so special for now. Simple Rest Controller with some unit and integration testing
 
 
+= Lombok
+
+https://medium.com/@mladen.bolic/lombok-data-improve-your-code-coverage-a74fb624a72b
+
+
 = Dockerize the App
 
 Some simple Dockerfile could be:

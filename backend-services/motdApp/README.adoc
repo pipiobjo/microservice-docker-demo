@@ -7,7 +7,9 @@ A message of the day app.
 ** Providing an integration test for rotation logic
 ** Necessary for distributed caching showcase later on
 
+= Lombok
 
+https://medium.com/@mladen.bolic/lombok-data-improve-your-code-coverage-a74fb624a72b
 
 
 
