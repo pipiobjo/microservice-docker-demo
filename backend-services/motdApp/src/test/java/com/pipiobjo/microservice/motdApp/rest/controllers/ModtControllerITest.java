@@ -59,7 +59,7 @@ public class ModtControllerITest {
 //		await().atLeast(5, SECONDS);
 //		get("/motd").then().body("content", not(equalTo(content)));
 
-		await().atLeast(delay, MILLISECONDS).untilAsserted(() -> get("/motd").then().body("content", not(equalTo(content))));
+		await().atLeast(delay+100, MILLISECONDS).untilAsserted(() -> get("/motd").then().body("content", not(equalTo(content))));
 
 	}
 
