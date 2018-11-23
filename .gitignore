@@ -180,3 +180,7 @@ local.properties
 backend-services/helloWorldApp/build/
 
 backend-services/motdApp/build/
+
+backend-services/serviceregistry/build/
+
+backend-services/webgateway/build/

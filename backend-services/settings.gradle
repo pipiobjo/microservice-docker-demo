@@ -17,5 +17,9 @@ include 'services:webservice'
 
 rootProject.name = 'com.pipiobjo.microservices.backend'
 
+include 'serviceregistry'
+include 'webgateway'
 include 'helloWorldApp'
 include 'motdApp'
+
+

@@ -2,9 +2,7 @@ package com.pipiobjo.microservice.motdapp.services.models;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
-import java.sql.Timestamp;
 import java.time.LocalTime;
 
 @Data

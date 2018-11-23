@@ -1,0 +1,152 @@
+buildscript {
+	ext {
+		springBootVersion = '2.0.6.RELEASE'
+	}
+	repositories {
+        gradlePluginPortal()
+        jcenter()
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath "com.bmuschko:gradle-docker-plugin:4.0.3"
+        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.6.2"
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'com.bmuschko.docker-spring-boot-application'
+apply plugin: "org.sonarqube"
+apply plugin: "jacoco"
+
+
+group = 'com.pipiobjo.microservice'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+
+repositories {
+    jcenter()
+	mavenCentral()
+}
+
+
+ext {
+	springCloudVersion = 'Finchley.SR2'
+}
+
+configurations {
+    developmentOnly
+    runtimeClasspath {
+        extendsFrom developmentOnly
+    }
+}
+
+bootJar {
+    excludeDevtools = false
+}
+
+dependencies {
+    compileOnly('org.projectlombok:lombok:1.16.20')
+
+    //spring
+    implementation("org.springframework.boot:spring-boot-devtools")
+	implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation('org.springframework.cloud:spring-cloud-starter-netflix-eureka-client')
+    implementation('org.springframework.cloud:spring-cloud-starter-netflix-zuul')
+
+    // swagger
+    implementation "io.springfox:springfox-swagger2:2.9.2"
+    implementation "io.springfox:springfox-swagger-ui:2.9.2"
+
+    //testing
+    testImplementation("org.assertj:assertj-core:3.11.1")
+    testImplementation 'io.rest-assured:rest-assured:3.2.0'
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
+}
+
+task copyContainerArtifacts(type: Copy, group: 'docker') {
+    description 'Move the jar into the container.'
+    dependsOn bootJar
+
+    into ("${buildDir}")
+
+    into ('docker'){
+        from new File("${buildDir}/libs")
+        from new File("${buildDir}/resources/main/entrypoint.sh")
+
+    }
+}
+
+import com.bmuschko.gradle.docker.tasks.image.Dockerfile
+
+task createDockerfile(type: Dockerfile) {
+    dependsOn copyContainerArtifacts
+    destFile = project.file('build/docker/Dockerfile')
+	from 'openjdk:8-jre-alpine'
+    addFile jar.getArchiveName(), "/app/${jar.archiveName}"
+    addFile "entrypoint.sh", '/entrypoint.sh'
+    //environmentVariable(["JAVA_OPTS":'-agentlib:jdwp=transport=dt_socket,address=5005,server=y,suspend=n'])
+	//copyFile jar.archivePath.toPath() , "/app/${jar.archiveName}"
+    //runCommand "sh", "-c", "echo", '${JAVA_OPTS}'
+    //-Djava.security.egd=file:/dev/./urandom
+    runCommand 'ls '+  " /app/${jar.archiveName}"
+  //  defaultCommand 'java $JAVA_OPTS' +  " -jar /app/${jar.archiveName}"
+    //defaultCommand '/usr/bin/java', '${JAVA_OPTS}', '-jar', "/app/${jar.archiveName}"
+    defaultCommand '/entrypoint.sh', "/app/${jar.archiveName}"
+    //defaultCommand 'sh', '-c','echo', 'JAVA_OPTS=${JAVA_OPTS}'
+
+	exposePort 8080, 5005
+//	runCommand 'apk --update --no-cache add curl'
+//	instruction 'HEALTHCHECK CMD curl -f http://localhost:8080/health || exit 1'
+}
+
+import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+
+import java.nio.file.Paths
+
+task dockerBuildImage(type: DockerBuildImage, overwrite: true) {
+    dependsOn createDockerfile
+    inputDir = project.file('build/docker/')
+    tag = (project.group + "/" + project.name+":" + project.version).toLowerCase()
+}
+
+//task syncWebAppArchive(type: Sync) {
+//    dependsOn assemble
+//   from jar.archivePath
+//    into createDockerfile.destFile.parentFile
+//}
+
+//createDockerfile.dependsOn syncWebAppArchive
+//docker {
+//	name "${project.group}/${bootJar.baseName}"
+//	copySpec.from(tasks.unpack.outputs).into("dependency")
+//	buildArgs(['DEPENDENCY': "dependency"])
+//}
+
+
+docker {
+    springBootApplication {
+//        baseImage = 'openjdk:8-alpine'
+        ports = [9090, 8080]
+    }
+}
+
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        csv.enabled false
+        html.destination file("${buildDir}/jacocoHtml")
+    }
+}

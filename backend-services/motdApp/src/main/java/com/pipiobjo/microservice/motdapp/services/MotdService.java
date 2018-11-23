@@ -1,7 +1,7 @@
 package com.pipiobjo.microservice.motdapp.services;
 
-import com.pipiobjo.microservice.motdapp.services.models.Motd;
 import com.pipiobjo.microservice.motdapp.repository.ThoughtRepository;
+import com.pipiobjo.microservice.motdapp.services.models.Motd;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -9,7 +9,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.sql.Timestamp;
 import java.time.LocalTime;
 import java.util.concurrent.atomic.AtomicLong;
 

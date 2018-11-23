@@ -1,0 +1,10 @@
+spring:
+   application:
+      name: webgateway
+   devtools:
+      remote:
+         secret: mysecret
+
+eureka:
+  client:
+    enabled: false

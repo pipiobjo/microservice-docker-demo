@@ -1,0 +1,23 @@
+eureka:
+  instance:
+    preferIpAddress: true
+#    hostname: localhost # should be set from docker env variable
+  client:
+    fetch-registry: true
+    registerWithEureka: true
+    enabled: true
+    #healthcheck:
+    #  enabled: false
+    serviceUrl:
+      defaultZone: http://${eurekaHost}:8761/eureka/
+# ROUTING
+zuul:
+  routes:
+    helloWorld:
+      path: /greeting/**
+      serviceId: HELLOWORLDAPPLICATION
+      stripPrefix: true
+    motd:
+      path: /motd/**
+      serviceId: MOTDAPPLICATION
+      stripPrefix: true

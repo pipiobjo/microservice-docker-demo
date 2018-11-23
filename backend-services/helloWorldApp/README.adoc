@@ -73,9 +73,9 @@ Using remote debugging:
 docker run -d -e "JAVA_OPTS=’-agentlib:jdwp=transport=dt_socket,address=5005,server=y,suspend=n’" -p 8080:8080 -p 5005:5005 --name helloworldapp -it com.pipiobjo.microservice/helloworldapp:0.0.1-snapshot
 ----
 
-Connect to the running container via bash
+Connect to the running container via sh
 ----
-docker exec -i -t helloworldapp /bin/bash
+docker exec -i -t helloworldapp /bin/sh
 ----
 
 

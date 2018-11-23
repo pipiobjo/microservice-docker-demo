@@ -1,3 +1,26 @@
+= URLS
+
+
+Via Webgateway
+http://localhost:8080/greeting/swagger-ui.html
+
+
+|===
+
+|webgateway | http://localhost:8080
+|eureka | http://localhost:8761
+|helloWorld | http://localhost:8180/swagger-ui.html
+|motd | http://localhost:8280/swagger-ui.html
+
+|===
+
+Access via webgateway
+
+|===
+|helloWorld | http://localhost:8080/greeting/swagger-ui.html
+|motd | http://localhost:8080/motd/swagger-ui.html
+|===
+
 = Docker Compose
 
 
@@ -18,7 +41,7 @@ docker-compose -f docker-compose.yml up -d
 
 ----
 
-Stop and remove
+Stop and remove all containers
 
 ----
 
@@ -27,11 +50,13 @@ docker-compose stop && docker-compose rm -f
 ----
 
 
-== URLS
+Stop single container
 
-eureka: http://localhost:8761
-helloWorld: http://localhost:8180/swagger-ui.html
-motd: http://localhost:8280/swagger-ui.html
+----
+docker-compose stop webgateway
+----
+
+
 
 
 = Docker Network

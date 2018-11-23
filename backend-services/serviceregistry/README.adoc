@@ -1,29 +1,30 @@
-= motdApp
+= Webgateway
 
-A message of the day app.
+Nothing so special for now. Simple Rest Controller with some unit and integration testing
 
-* Json Data from https://www.forbes.com/forbesapi/thought/uri.json?enrich=true&query=10&relatedlimit=10[forbes] to provide dummy data
-* Using Caching to rotate the message every 24h
-** Providing an integration test for rotation logic
-** Necessary for distributed caching showcase later on
-
-= Lombok
-
-https://medium.com/@mladen.bolic/lombok-data-improve-your-code-coverage-a74fb624a72b
 
 
 
 = Dockerize the App
 
+Some simple Dockerfile could be:
 
-Use the gradle plugin https://bmuschko.github.io/gradle-docker-plugin/#spring_boot_application_plugin[gradle-docker-plugin]  it has some build-in features for spring boot applications
+----
+FROM openjdk:8-jdk-alpine
+VOLUME /tmp
+ARG JAR_FILE
+COPY ${JAR_FILE} app.jar
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
+----
+
+But we try to use the gradle plugin https://bmuschko.github.io/gradle-docker-plugin/#spring_boot_application_plugin[gradle-docker-plugin]  it has some build-in features for spring boot applications
 
 Configure it via:
 ----
 docker {
     springBootApplication {
         baseImage = 'openjdk:8-alpine'
-        ports = [9091, 8080]
+        ports = [9090, 8080]
     }
 }
 ----
@@ -35,43 +36,43 @@ Execute gradle:
 
 A local docker image is created check it via:
 ----
-# docker images | grep motd
+# docker images | grep hello
 
-
+com.pipiobjo.microservice/webgateway   0.0.1-snapshot      edcd06608634        12 seconds ago      141MB
 ----
 
 Run the container via
 ----
-# docker run -d -p 8080:8080 --name motdapp -it com.pipiobjo.microservice/motdapp:0.0.1-snapshot && docker logs -f motdapp
+# docker run -d -p 8080:8080 --name webgateway -it com.pipiobjo.microservice/webgateway:0.0.1-snapshot && docker logs -f webgateway
 ----
 
 List running container
 ----
-# docker container ls -a | grep motd
-148447f6e1fe        com.pipiobjo.microservice/motdapp:0.0.1-snapshot   "java -jar /app/hell…"   About a minute ago   Exited (130) About a minute ago                       motdapp
+# docker container ls -a | grep hello
+148447f6e1fe        com.pipiobjo.microservice/webgateway:0.0.1-snapshot   "java -jar /app/hell…"   About a minute ago   Exited (130) About a minute ago                       webgateway
 
 ----
 
 Logging output of the container:
 ----
-# docker logs -f motdapp
+# docker logs -f webgateway
 ----
 
 Stopping the container:
 ----
-docker stop motdapp
-docker rm motdapp
+docker stop webgateway
+docker rm webgateway
 ----
 
 
 Using remote debugging:
 ----
-docker run -d -e "JAVA_OPTS=’-agentlib:jdwp=transport=dt_socket,address=5005,server=y,suspend=n’" -p 8081:8080 -p 5006:5005 --name motdapp -it com.pipiobjo.microservice/motdapp:0.0.1-snapshot
+docker run -d -e "JAVA_OPTS=’-agentlib:jdwp=transport=dt_socket,address=5005,server=y,suspend=n’" -p 8080:8080 -p 5005:5005 --name webgateway -it com.pipiobjo.microservice/webgateway:0.0.1-snapshot
 ----
 
 Connect to the running container via sh
 ----
-docker exec -i -t motdapp /bin/sh
+docker exec -i -t webgateway /bin/sh
 ----
 
 
@@ -90,7 +91,7 @@ spring.devtools.remote.secret: mysecret
 
 - New Spring Boot Run Config
 - Main Class org.springframework.boot.devtools.RemoteSpringApplication
-- Program args: http://localhost:8081 -> the forwarded docker port
+- Program args: http://localhost:8080 -> the forwarded docker port
 - Run parameters need the additional "spring.devtools.remote.secret= mysecret" settings
 - Rebuild module, depends on your IDE Eclipse use automatic build on changes
 
