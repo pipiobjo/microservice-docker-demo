@@ -28,7 +28,7 @@ public class GreetingController {
     })
     @RequestMapping("/greeting")
     public Greeting greeting(@RequestParam(value="name", required=false) String name) {
-        log.debug("Starting request with name: {}", name);
+        log.info("Starting request with name: {}", name);
         return greetingService.buildGreeting(name);
     }
 }

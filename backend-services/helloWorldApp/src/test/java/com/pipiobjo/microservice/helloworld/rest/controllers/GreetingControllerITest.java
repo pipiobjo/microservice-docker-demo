@@ -19,11 +19,9 @@ public class GreetingControllerITest {
     @LocalServerPort
     private int port;
 
-
 	@Before
 	public void setUp() {
 		RestAssured.port = port;
-
 	}
 
 	@Test

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true">
+
+
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
+    <springProperty name="destination" source="logging.path"/>
+    <springProperty defaultValue="SET_IT_TO_SAVE_YOUR_TIME_BELIEVE_ME" name="LOGSTASH" source="logstash.servers"/>
+    <springProperty scope="context" name="APP_NAME" source="spring.application.name"/>
+
+
+    <springProfile name="local">
+
+
+        <appender name="STASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+            <keepAliveDuration>5 minutes</keepAliveDuration>
+            <reconnectionDelay>10 second</reconnectionDelay>
+            <waitStrategyType>sleeping</waitStrategyType>
+            <ringBufferSize>16384</ringBufferSize>
+            <destination>${LOGSTASH}</destination> <!-- ${LOGSTASH}-->
+            <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+                <providers>
+                    <mdc/> <!-- MDC variables on the Thread will be written as JSON fields-->
+                    <context/> <!--Outputs entries from logback's context -->
+                    <logLevel/>
+                    <loggerName/>
+
+                    <pattern>
+                        <pattern>
+                            {
+                            "service": "${APP_NAME}"
+                            }
+                        </pattern>
+                    </pattern>
+
+                    <threadName/>
+                    <message/>
+
+                    <logstashMarkers/> <!-- Useful so we can add extra information for specific log lines as Markers-->
+                    <arguments/> <!--or through StructuredArguments-->
+
+                    <stackTrace>
+                        <fieldName>stackTrace</fieldName>
+                        <throwableConverter class="net.logstash.logback.stacktrace.ShortenedThrowableConverter">
+                            <exclude>net\.sf\.cglib\..*</exclude>
+                            <maxDepthPerThrowable>30</maxDepthPerThrowable>
+                            <rootCauseFirst>true</rootCauseFirst>
+                        </throwableConverter>
+                    </stackTrace>
+                </providers>
+            </encoder>
+        </appender>
+
+        <root level="INFO">
+            <appender-ref ref="CONSOLE" />
+            <appender-ref ref="STASH" />
+        </root>
+
+        <!-- https://logback.qos.ch/manual/configuration.html#shutdownHook and https://jira.qos.ch/browse/LOGBACK-1090 -->
+        <shutdownHook class="ch.qos.logback.core.hook.DelayingShutdownHook"/>
+
+        <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+            <resetJUL>true</resetJUL>
+        </contextListener>
+
+    </springProfile>
+    <root level="INFO">
+        <appender-ref ref="CONSOLE" />
+    </root>
+</configuration>

@@ -9,3 +9,5 @@ eureka:
       enabled: false
     serviceUrl:
       defaultZone: http://${eurekaHost}:8761/eureka/
+
+logstash.servers: logstash:5000

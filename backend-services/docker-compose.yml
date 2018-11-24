@@ -7,6 +7,58 @@ networks:
         - subnet: 172.20.0.0/24
 
 services:
+# Because of trouble like https://github.com/docker-library/elasticsearch/issues/98
+# Switching to image from docker.elastic.co
+# https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html
+  elasticSearch:
+    hostname: elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.5.1
+    networks:
+      backend:
+        ipv4_address: 172.20.0.6
+        aliases:
+          - elasticsearch
+    ports:
+          - "9200:9200"
+          - "9300:9300"
+    environment:
+      discovery.type: 'single-node'
+      #bootstrap.ignore_system_bootstrap_checks: 'true'
+
+  kibana:
+    hostname: kibana
+    image: docker.elastic.co/kibana/kibana:6.5.1
+    networks:
+      backend:
+        ipv4_address: 172.20.0.7
+        aliases:
+          - kibana
+    ports:
+          - "5601:5601"
+    links:
+      - elasticSearch
+    environment:
+      SERVER_NAME: kibana
+      ELASTICSEARCH_URL: http://172.20.0.6:9200
+#    volumes:
+#      - type: bind
+#        source: ./kibana/kibana.yml
+#        target: /usr/share/kibana/config/kibana.yml
+
+  logstash:
+    hostname: logstash
+    image: docker.elastic.co/logstash/logstash:6.5.1
+    networks:
+      backend:
+        ipv4_address: 172.20.0.8
+        aliases:
+          - logstash
+    ports:
+          - "5000:5000"
+    volumes:
+      - type: bind
+        source: ./logstash/pipeline/
+        target: /usr/share/logstash/pipeline/
 
   eureka:
     hostname: eureka
@@ -37,6 +89,8 @@ services:
   helloWorld:
     hostname: helloworld
     image: com.pipiobjo.microservice/helloworldapp:0.0.1-snapshot
+    links:
+      - logstash
     networks:
       backend:
        aliases:

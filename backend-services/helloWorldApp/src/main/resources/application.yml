@@ -1,6 +1,6 @@
 spring:
    application:
-      name: helloWorldApplication
+      name: helloworldapplication
    devtools:
       remote:
          secret: mysecret

@@ -52,7 +52,20 @@ bootJar {
 dependencies {
     implementation("org.springframework.boot:spring-boot-devtools")
     compileOnly('org.projectlombok:lombok:1.16.20')
-	implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.springframework.boot:spring-boot-starter-logging")
+    implementation('org.springframework.cloud:spring-cloud-starter-netflix-eureka-client')
+
+    // logging
+    implementation('org.springframework.cloud:spring-cloud-starter-sleuth')
+    implementation('org.springframework.cloud:spring-cloud-sleuth-zipkin')
+    implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '5.2'
+    implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
+    implementation group: 'ch.qos.logback', name: 'logback-core', version: '1.2.3'
+
+
+
+    implementation('org.springframework.cloud:spring-cloud-starter-netflix-eureka-client')
     implementation('org.springframework.cloud:spring-cloud-starter-netflix-eureka-client')
 
     // swagger
